@@ -1,0 +1,40 @@
+package module4;
+
+import java.io.File;
+import java.util.Scanner;
+
+public class PostfixFileReader {
+
+    public static void main(String[] args) {
+
+        PostfixCalculator calculator = new PostfixCalculator();
+
+        try {
+
+            File file = new File("expressions.txt");
+            Scanner input = new Scanner(file);
+
+            while (input.hasNextLine()) {
+
+                String expression = input.nextLine();
+
+                System.out.println("Expression: "
+                        + expression);
+
+                int result =
+                        calculator.evaluatePostfix(expression);
+
+                System.out.println("Result: "
+                        + result);
+
+                System.out.println();
+            }
+
+            input.close();
+
+        } catch (Exception e) {
+            System.out.println("File Error: "
+                    + e.getMessage());
+        }
+    }
+}
