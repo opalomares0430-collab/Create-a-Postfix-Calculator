@@ -1,0 +1,105 @@
+package module4;
+
+import java.util.Stack;
+
+public class PostfixCalculator {
+
+    public int evaluatePostfix(String expression) {
+
+        Stack<Integer> stack = new Stack<>();
+
+        String[] tokens = expression.split("\\s+");
+
+        try {
+
+            for (String token : tokens) {
+
+                if (token.matches("-?\\d+")) {
+                    stack.push(Integer.parseInt(token));
+                }
+
+                else if (token.equals("+") ||
+                         token.equals("-") ||
+                         token.equals("*") ||
+                         token.equals("/") ||
+                         token.equals("%")) {
+
+                    if (stack.size() < 2) {
+                        throw new IllegalArgumentException(
+                                "Error: Invalid postfix expression");
+                    }
+
+                    int operand2 = stack.pop();
+                    int operand1 = stack.pop();
+
+                    switch (token) {
+                        case "+":
+                            stack.push(operand1 + operand2);
+                            break;
+
+                        case "-":
+                            stack.push(operand1 - operand2);
+                            break;
+
+                        case "*":
+                            stack.push(operand1 * operand2);
+                            break;
+
+                        case "/":
+                            stack.push(operand1 / operand2);
+                            break;
+
+                        case "%":
+                            stack.push(operand1 % operand2);
+                            break;
+                    }
+                }
+
+                else {
+                    throw new IllegalArgumentException(
+                            "Error: Invalid operator");
+                }
+            }
+
+            if (stack.size() != 1) {
+                throw new IllegalArgumentException(
+                        "Error: Invalid postfix expression");
+            }
+
+            return stack.pop();
+
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return 0;
+        }
+    }
+
+    public static void main(String[] args) {
+
+        PostfixCalculator calculator = new PostfixCalculator();
+
+        String expression1 = "4 2 * 3 +";
+        System.out.println("Expression: " + expression1);
+        System.out.println("Result: "
+                + calculator.evaluatePostfix(expression1));
+
+        String expression2 = "5 3 + 7 *";
+        System.out.println("\nExpression: " + expression2);
+        System.out.println("Result: "
+                + calculator.evaluatePostfix(expression2));
+
+        String expression3 = "15 5 /";
+        System.out.println("\nExpression: " + expression3);
+        System.out.println("Result: "
+                + calculator.evaluatePostfix(expression3));
+
+        String expression4 = "10 3 %";
+        System.out.println("\nExpression: " + expression4);
+        System.out.println("Result: "
+                + calculator.evaluatePostfix(expression4));
+
+        String expression5 = "4 2 * +";
+        System.out.println("\nExpression: " + expression5);
+        calculator.evaluatePostfix(expression5);
+    }
+}
